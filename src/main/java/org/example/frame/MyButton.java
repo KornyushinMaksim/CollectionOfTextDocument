@@ -1,4 +1,11 @@
 package org.example.frame;
 
-public class MyBotton {
+import org.example.textDocument.WorkToFile;
+
+public class MyButton extends TextArea{
+
+
+    public MyButton(WorkToFile myFile) {
+        super(myFile);
+    }
 }
