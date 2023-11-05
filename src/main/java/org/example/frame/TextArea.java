@@ -1,58 +1,176 @@
 package org.example.frame;
 
-import org.example.textDocument.WorkToFile;
+import org.example.text_new.WorkWithFile;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
-public class TextArea extends JFrame{
+public class TextArea extends JFrame implements ActionListener{
 
-    public TextArea(WorkToFile myFile)
-    {
-        super(myFile.getFile().getName());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(new GridBagLayout());
-        setSize(new Dimension(920, 600));
+    private WorkWithFile workWithFile;
+    private JToolBar toolBar;
+    private JPanel panel;
+    private JTextPane textPane;
+    private int index;
+
+    //вложенный конструктор с кнопками
+    class MyButtons extends JButton {
+        MyButtons(String name) {
+            super(new ImageIcon("icon" + File.separator + name));
+            setFocusPainted(false);
+        }
+    }
+
+    private void setContent() {
+        try {
+            textPane.setPage(workWithFile.getBook().get(0).toString());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Страница не найдена", "Сообщение", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        index = Integer.parseInt(((JMenuItem) e.getSource()).getActionCommand());
+        setContent();
+    }
 
 
-        // Cоздание многострочных полей
-        JTextArea area1 = new JTextArea(myFile.readFile(myFile), 45, 60);
-        // Шрифт и табуляция
-        area1.setFont(new Font("Dialog", Font.PLAIN, 14));
-        area1.setTabSize(10);
-        area1.setLineWrap(true);
-        area1.setWrapStyleWord(true);
 
-        // Добавим поля в окно
-        JPanel contents = new JPanel();
-        contents.add(area1);
-//        setContentPane(contents);
-        JScrollPane js = new JScrollPane(contents);
-        js.setPreferredSize(new Dimension());
-        add(js, new GridBagConstraints(0, 0, 0, 1, 1, 1,
-                GridBagConstraints.NORTH, GridBagConstraints.BOTH,
-                new Insets(1, 1, 1, 1), 0, 0));
-
-        // Выводим окно на экран
-//        setSize(new Dimension(area1.getWidth(), area1.getHeight()));
+    public TextArea(WorkWithFile workWithFile, String pathDir, String nameFile) {
+        super(nameFile);
+        this.workWithFile = workWithFile;
+        this.workWithFile.readFile(pathDir, nameFile);
+//        setDefaultCloseOperation(HIDE_ON_CLOSE);
+//        setLocationRelativeTo(null);
 //        setLayout(new GridBagLayout());
+//        setSize(new Dimension(920, 600));
+        this.index = 0;
+        setBounds(250, 50, 800, 700);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        this.toolBar = new JToolBar("Панель меню");
+        MyButtons forward = new MyButtons("forward.png");
+        forward.setToolTipText("Следующая страница");
+        MyButtons back = new MyButtons("back.png");
+        back.setToolTipText("Предыдущая страница");
+        MyButtons search = new MyButtons("search.png");
+        search.setToolTipText("Поиск");
+        toolBar.add(search);
+        toolBar.add(back);
+        toolBar.add(forward);
+        add(this.toolBar, BorderLayout.NORTH);
+
+        Border border = BorderFactory.createEtchedBorder();
+
+        this.panel = new JPanel();
+        this.panel.setLayout(new GridLayout(1,2));
+        add(panel, BorderLayout.CENTER);
+
+        JScrollPane scrollPane = new JScrollPane();
+        this.textPane = new JTextPane();
+        scrollPane.getViewport().add(this.textPane);
+        panel.add(scrollPane);
+        JPanel p = new JPanel();
+        p.setLayout(new GridLayout(1,3));
+        p.setBorder(border);
+        p.add(new JPanel());
+        p.add(new JButton("Ok"));
+        p.add(new JPanel());
+        add(p, BorderLayout.SOUTH);
+
+        forward.addActionListener(e -> {
+            index = (index + 1) % (workWithFile.getBook().size());
+            setContent();
+        });
+        back.addActionListener(e -> {
+            index = index == 0 ? workWithFile.getBook().size() - 1 : index - 1;
+            setContent();
+        });
+
+
+
+        setContent();
         setVisible(true);
 
-        JButton jButton = new JButton("Сохранить");
-        add(jButton);
-        jButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    myFile.createdFile();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
     }
+
+
+//        // Cоздание многострочных полей
+//        JTextArea area1 = new JTextArea(workWithFile.getBook().get(index).toString(), 45, 60);
+//        // Шрифт и табуляция
+//        area1.setFont(new Font("Dialog", Font.PLAIN, 14));
+//        area1.setTabSize(10);
+//        area1.setLineWrap(true);
+//        area1.setWrapStyleWord(true);
+
+        // Добавим поля в окно
+////        this.textPane = new JPanel();
+//        JPanel panel = new JPanel();
+//        this.textPane = new JTextPane();
+////        this.textPane.add(area1);
+////        setContentPane(textPane1);
+//        JScrollPane js = new JScrollPane();
+////        js.setPreferredSize(new Dimension());
+//        js.getViewport().add(this.textPane);
+//        panel.add(js);
+//        add(js, new GridBagConstraints(0, 0, 0, 1, 1, 1,
+//                GridBagConstraints.NORTH, GridBagConstraints.BOTH,
+//                new Insets(1, 1, 1, 1), 0, 0));
+
+        // Выводим окно на экран
+
+//        JButton save = new JButton("Сохранить");
+//        add(save);
+//        save.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                workWithFile.save();
+//                dispose();
+//            }
+//        });
+
+//        JButton delete = new JButton("Удалить");
+//        add(delete);
+//        delete.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                workWithFile.myDeleteFile();
+//                dispose();
+//            }
+//        });
+
+//        JButton search = new JButton("Поиск по документу");
+//        add(search);
+//        search.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                workWithFile.searchToFile();
+//            }
+//        });
+
+//        JButton forward = new JButton("Следующая страница");
+//        add(forward);
+//        forward.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        });
+//
+//        JButton back = new JButton("Предыдущая страница");
+
+
+
+
+
+
+
+
 }

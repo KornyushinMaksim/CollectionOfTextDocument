@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class MyFile {
     private String nameFile;
-    private String path;
+    private String pathDir;
     private String author;
     private String sizeFile;
     private String dateOfCreation;
@@ -17,11 +17,11 @@ public class MyFile {
     private ArrayList <String> texts;
     private ArrayList <String> lists;
 
-    public MyFile(String nameFile, String path) throws UnknownHostException {
+    public MyFile(String pathDir, String nameFile) throws UnknownHostException {
         this.nameFile = nameFile;
-        this.path = path;
+        this.pathDir = pathDir;
         this.author = InetAddress.getLocalHost().getHostName();
-//        this.sizeFile = String.format("%.2f",(float)path.length() / 1000);
+//        this.sizeFile = String.format("%.2f",(float)nameFile.length() / 1000);
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         this.dateOfCreation = format.format(new Date());
     }
@@ -31,7 +31,7 @@ public class MyFile {
     }
 
     public String getPath() {
-        return path;
+        return pathDir;
     }
 
     public void setSizeFile(String sizeFile) {

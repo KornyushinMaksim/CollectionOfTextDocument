@@ -12,35 +12,70 @@
 //        Приложение должно поддерживать интерфейс командной строки.
 
 package org.example;
+import org.example.frame.FileManager;
 import org.example.frame.TextArea;
 import org.example.textDocument.WorkToFile;
+import org.example.text_new.WorkWithFile;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.net.UnknownHostException;
+
+import static java.lang.Thread.sleep;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        String nameFile = "myFirstFile";
-        String nameFile3 = "myThirdFile";
-        String path = "/Users/mac/Desktop/Новая папка";
+    public static void main(String[] args) throws InterruptedException {
+        String nameFile1 = "myFile123";
+        String pathDir = "Новая папка2";
 
-        WorkToFile myFile = new WorkToFile(nameFile, path);
-        WorkToFile myFile3 = new WorkToFile(nameFile3, path);
-        myFile.createdFile();
-        myFile3.createdFile();
+//        WorkWithFile workWithFile = null;
+//        try {
+//            workWithFile = new WorkWithFile(pathDir, nameFile1);
+//        } catch (UnknownHostException e) {
+//            throw new RuntimeException(e);
+//        }
+//        workWithFile.myCreatedNewFile(pathDir, nameFile1);
+//        sleep(10000);
+//        workWithFile.myDeleteFile();
 
+
+////создание папки
+//        File dir = new File(path);
+//        if (dir.exists()){
+//            System.out.println("Папка существует");
+//        } else {
+//            System.out.println(dir.mkdir());
+//        }
+//
+//
+//        File newFile = new File(path + File.separator + nameFile);
+//        if (newFile.exists()){
+//            System.out.println("Файл существует");
+//        } else {
+//            System.out.println(newFile.createNewFile());
+//        }
+
+
+
+//        String nameFile = "myFirstFile";
+//        String nameFile3 = "myThirdFile";
+//        String path = "D:\\Учеба\\javaProgect\\CollectionOfTextDocument\\Новая папка";
+//
+//        WorkToFile myFile = new WorkToFile(nameFile, path);
+//        WorkToFile myFile3 = new WorkToFile(nameFile3, path);
+//        myFile.createdNewFile();
+//        myFile3.createdNewFile();
+//
+//
 //        System.out.println(myFile);
 //        System.out.println();
 //        System.out.println(myFile3);
 //        System.out.println();
 
-        File folder = new File(path);   //вывод списка файлов
-        for (File file1 : folder.listFiles()){
-            System.out.println(file1);
-        }
+                //вывод списка файлов в каталоге
+//окно файлменеджера
+        FileManager fm = new FileManager(pathDir);
 
-        TextArea areaTest = new TextArea(myFile);   //откратие файла в окне
+//        TextArea areaTest = new TextArea(myFile, pathDir);   //откратие файла в окне
     }
 }
