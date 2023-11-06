@@ -1,5 +1,7 @@
 package org.example.text_new;
 
+import com.sun.jdi.event.StepEvent;
+import org.example.frame.OpenFileFX;
 import org.example.textDocument.MyFile;
 
 import javax.swing.*;
@@ -44,7 +46,7 @@ public class WorkWithFile {
         this.newFile = new File(pathDir + File.separator + nameFile + ".txt");
         if (newFile.exists()) {
             flag = false;
-            String text = "Файл с именем " + nameFile + " существует";
+            String text = "Файл с именем '" + nameFile + "' существует";
             JOptionPane.showMessageDialog(null, text, "Предупреждение", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
@@ -146,8 +148,12 @@ public class WorkWithFile {
         newFile.delete();
     }
 
-    public void searchToFile(){
-        String searchStr = JOptionPane.showInputDialog(null, "", "Поиск...", JOptionPane.QUESTION_MESSAGE);
-
+    public void searchToFile(String list, String str){
+//        String searchStr = JOptionPane.showInputDialog(null, "", "Поиск...", JOptionPane.QUESTION_MESSAGE);
+        ArrayList<String> words = new ArrayList<>();
+        int cnt = 0;
+        while (list.isEmpty()){
+            if ()
+        }
     }
 }

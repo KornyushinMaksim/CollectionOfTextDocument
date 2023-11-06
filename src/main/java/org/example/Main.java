@@ -12,14 +12,7 @@
 //        Приложение должно поддерживать интерфейс командной строки.
 
 package org.example;
-import org.example.frame.FileManager;
-import org.example.frame.TextArea;
-import org.example.textDocument.WorkToFile;
-import org.example.text_new.WorkWithFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.UnknownHostException;
+import org.example.frame.FileManagerFX;
 
 import static java.lang.Thread.sleep;
 
@@ -74,8 +67,8 @@ public class Main {
 
                 //вывод списка файлов в каталоге
 //окно файлменеджера
-        FileManager fm = new FileManager(pathDir);
+        FileManagerFX fm = new FileManagerFX(pathDir);
 
-//        TextArea areaTest = new TextArea(myFile, pathDir);   //откратие файла в окне
+//        OpenFileFX areaTest = new OpenFileFX(myFile, pathDir);   //откратие файла в окне
     }
 }

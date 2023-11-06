@@ -8,12 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.UnknownHostException;
 
-public class FileManager extends JFrame {
+public class FileManagerFX extends JFrame {
     private WorkWithFile workWithFile;
     private JMenu content, program;
     private JMenuItem[] commands;
 
-    public FileManager(String pathDir) {
+    public FileManagerFX(String pathDir) {
         super("окно работы с файлом");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -33,7 +33,8 @@ public class FileManager extends JFrame {
                     try {
                         workWithFile = new WorkWithFile();
                         if (workWithFile.myCreatedNewFile(pathDir, nameFile)) {
-                            TextArea textArea = new TextArea(workWithFile, pathDir, nameFile);
+                            System.out.println("===");
+//                            CreatedFileFX createdFileFX = new CreatedFileFX(workWithFile, pathDir, nameFile);
                         }
                     } catch (UnknownHostException ex) {
                         throw new RuntimeException(ex);
@@ -51,8 +52,8 @@ public class FileManager extends JFrame {
                         "Введите имя файла", "Открытие файла TXT", JOptionPane.QUESTION_MESSAGE);
                 try {
                     workWithFile = new WorkWithFile();
-//                    String str = workWithFile.openList(pathDir, nameFile);
-                    TextArea textArea = new TextArea(workWithFile, pathDir, nameFile);
+                    workWithFile.openList(pathDir, nameFile);
+                    OpenFileFX openFileFX = new OpenFileFX(workWithFile, nameFile);
                 } catch (UnknownHostException ex) {
                     throw new RuntimeException(ex);
                 }

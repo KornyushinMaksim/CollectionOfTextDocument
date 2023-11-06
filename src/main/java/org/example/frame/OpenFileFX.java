@@ -10,13 +10,14 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class TextArea extends JFrame implements ActionListener{
+public class OpenFileFX extends JFrame implements ActionListener{
 
     private WorkWithFile workWithFile;
     private JToolBar toolBar;
     private JPanel panel;
     private JTextPane textPane;
     private int index;
+    private String[] lists;
 
     //вложенный конструктор с кнопками
     class MyButtons extends JButton {
@@ -26,39 +27,26 @@ public class TextArea extends JFrame implements ActionListener{
         }
     }
 
-    private void setContent() {
-        try {
-            textPane.setPage(workWithFile.getBook().get(0).toString());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Страница не найдена", "Сообщение", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        index = Integer.parseInt(((JMenuItem) e.getSource()).getActionCommand());
-        setContent();
-    }
-
-
-
-    public TextArea(WorkWithFile workWithFile, String pathDir, String nameFile) {
+    public OpenFileFX(WorkWithFile workWithFile, String nameFile) {
         super(nameFile);
         this.workWithFile = workWithFile;
-        this.workWithFile.readFile(pathDir, nameFile);
+//        this.workWithFile.readFile(pathDir, nameFile);
 //        setDefaultCloseOperation(HIDE_ON_CLOSE);
 //        setLocationRelativeTo(null);
 //        setLayout(new GridBagLayout());
 //        setSize(new Dimension(920, 600));
         this.index = 0;
+
         setBounds(250, 50, 800, 700);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setLayout(new BorderLayout());
 
         this.toolBar = new JToolBar("Панель меню");
-        MyButtons forward = new MyButtons("forward.png");
+        MyButtons forward = new MyButtons("forward1.png");
+        forward.setPreferredSize(new Dimension(20, 20));
         forward.setToolTipText("Следующая страница");
-        MyButtons back = new MyButtons("back.png");
+        MyButtons back = new MyButtons("back1.png");
+        back.setPreferredSize(new Dimension(20, 20));
         back.setToolTipText("Предыдущая страница");
         MyButtons search = new MyButtons("search.png");
         search.setToolTipText("Поиск");
@@ -90,15 +78,38 @@ public class TextArea extends JFrame implements ActionListener{
             setContent();
         });
         back.addActionListener(e -> {
-            index = index == 0 ? workWithFile.getBook().size() - 1 : index - 1;
+            index = (index == 0) ? (workWithFile.getBook().size() - 1) : (index - 1);
             setContent();
         });
 
+        search.addActionListener(actionEvent -> {
+            String listForSearch = textPane.getText();
+            SearchFX searchFX = new SearchFX(workWithFile, listForSearch);
+
+//            workWithFile.searchToFile(listForSearch);
+        });
 
 
         setContent();
         setVisible(true);
 
+    }
+
+    private void setContent() {
+//        try {
+            textPane.setText(workWithFile.getBook().get(index).toString());
+
+//            textPane.setPage(lists[index]);
+//        } catch (IOException e) {
+//            textPane.setText(lists[index]);
+////            JOptionPane.showMessageDialog(null, "Страница не найдена", "Сообщение", JOptionPane.INFORMATION_MESSAGE);
+//        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        index = Integer.parseInt(((JMenuItem) e.getSource()).getActionCommand());
+        setContent();
     }
 
 
