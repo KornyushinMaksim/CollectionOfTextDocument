@@ -41,7 +41,7 @@ public class WorkWithFile {
 //        return this.files;
 //    }
 
-    public boolean myCreatedNewFile(String pathDir, String nameFile){
+    public boolean myCreatedNewFile(String pathDir, String nameFile) {
         boolean flag = true;
         this.newFile = new File(pathDir + File.separator + nameFile + ".txt");
         if (newFile.exists()) {
@@ -59,14 +59,14 @@ public class WorkWithFile {
         return flag;
     }
 
-            //первое открытие
-    public String openList(String pathDir, String nameFile){
+    //первое открытие
+    public String openList(String pathDir, String nameFile) {
         readFile(pathDir, nameFile);
         String str = this.book.get(0).toString();
         return str;
     }
 
-    public void readFile(String pathDir, String nameFile){
+    public void readFile(String pathDir, String nameFile) {
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
         String line = "";
@@ -77,8 +77,8 @@ public class WorkWithFile {
         try {
             fileReader = new FileReader(pathDir + File.separator + nameFile + ".txt");
             bufferedReader = new BufferedReader(fileReader);
-            while ((line = bufferedReader.readLine()) != null){
-                if (cnt % (index * 6) == 0){
+            while ((line = bufferedReader.readLine()) != null) {
+                if (cnt % (index * 6) == 0) {
                     if (list != null) {
                         book.add(list);
                         index++;
@@ -89,7 +89,7 @@ public class WorkWithFile {
                 this.list.append("\n");
                 cnt++;
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.getMessage();
         }
         book.add(list);
@@ -131,8 +131,8 @@ public class WorkWithFile {
 //    }
 
 
-    public void save(){
-        try(FileWriter fileWriter = new FileWriter(myFile.getPath() +
+    public void save() {
+        try (FileWriter fileWriter = new FileWriter(myFile.getPath() +
                 File.separator + myFile.getNameFile() +
                 ".txt", false);) {
 //            BufferedReader bufferedReader = new BufferedReader();
@@ -144,16 +144,20 @@ public class WorkWithFile {
         }
     }
 
-    public void myDeleteFile(){
+    public void myDeleteFile() {
         newFile.delete();
     }
 
-    public void searchToFile(String list, String str){
+    public void searchToFile(String list, String str) {
 //        String searchStr = JOptionPane.showInputDialog(null, "", "Поиск...", JOptionPane.QUESTION_MESSAGE);
-        ArrayList<String> words = new ArrayList<>();
+        ArrayList<Integer> words = new ArrayList<>();
         int cnt = 0;
-        while (list.isEmpty()){
-            if ()
+        int index = list.indexOf(str);
+        words.add(index);
+        while (list.isEmpty()) {
+           index = list.indexOf(str, index + 1);
+           words.add(index);
+            System.out.println(index);
         }
     }
 }

@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class OpenFileFX extends JFrame implements ActionListener{
+public class OpenFileFX extends JFrame implements ActionListener {
 
     private WorkWithFile workWithFile;
     private JToolBar toolBar;
@@ -43,10 +43,8 @@ public class OpenFileFX extends JFrame implements ActionListener{
 
         this.toolBar = new JToolBar("Панель меню");
         MyButtons forward = new MyButtons("forward1.png");
-        forward.setPreferredSize(new Dimension(20, 20));
         forward.setToolTipText("Следующая страница");
         MyButtons back = new MyButtons("back1.png");
-        back.setPreferredSize(new Dimension(20, 20));
         back.setToolTipText("Предыдущая страница");
         MyButtons search = new MyButtons("search.png");
         search.setToolTipText("Поиск");
@@ -58,7 +56,7 @@ public class OpenFileFX extends JFrame implements ActionListener{
         Border border = BorderFactory.createEtchedBorder();
 
         this.panel = new JPanel();
-        this.panel.setLayout(new GridLayout(1,2));
+        this.panel.setLayout(new GridLayout(1, 2));
         add(panel, BorderLayout.CENTER);
 
         JScrollPane scrollPane = new JScrollPane();
@@ -66,7 +64,7 @@ public class OpenFileFX extends JFrame implements ActionListener{
         scrollPane.getViewport().add(this.textPane);
         panel.add(scrollPane);
         JPanel p = new JPanel();
-        p.setLayout(new GridLayout(1,3));
+        p.setLayout(new GridLayout(1, 3));
         p.setBorder(border);
         p.add(new JPanel());
         p.add(new JButton("Ok"));
@@ -83,10 +81,24 @@ public class OpenFileFX extends JFrame implements ActionListener{
         });
 
         search.addActionListener(actionEvent -> {
+//            int s = 0;
+//            String searchWord = JOptionPane.showInputDialog(null, "",
+//                    "Search...", JOptionPane.QUESTION_MESSAGE);
+//            int index = textPane.getText().indexOf(searchWord);
+//            while (!textPane.getText().isEmpty()) {
+//                index = textPane.getText().indexOf(searchWord, index + searchWord.length());
+//                if (index > 0){
+//                    textPane.select(index, index + searchWord.length());
+//                    textPane.requestFocus();
+//                    s++;
+//                } else {
+//                    break;
+//                }
+//            }
+//            System.out.println(s);
             String listForSearch = textPane.getText();
-            SearchFX searchFX = new SearchFX(workWithFile, listForSearch);
-
-//            workWithFile.searchToFile(listForSearch);
+            SearchFX searchFX = new SearchFX(workWithFile, listForSearch, textPane);
+//            workWithFile.searchToFile(listForSearch, searchFX.getTextField().getText());
         });
 
 
@@ -97,7 +109,7 @@ public class OpenFileFX extends JFrame implements ActionListener{
 
     private void setContent() {
 //        try {
-            textPane.setText(workWithFile.getBook().get(index).toString());
+        textPane.setText(workWithFile.getBook().get(index).toString());
 
 //            textPane.setPage(lists[index]);
 //        } catch (IOException e) {
@@ -121,7 +133,7 @@ public class OpenFileFX extends JFrame implements ActionListener{
 //        area1.setLineWrap(true);
 //        area1.setWrapStyleWord(true);
 
-        // Добавим поля в окно
+    // Добавим поля в окно
 ////        this.textPane = new JPanel();
 //        JPanel panel = new JPanel();
 //        this.textPane = new JTextPane();
@@ -135,7 +147,7 @@ public class OpenFileFX extends JFrame implements ActionListener{
 //                GridBagConstraints.NORTH, GridBagConstraints.BOTH,
 //                new Insets(1, 1, 1, 1), 0, 0));
 
-        // Выводим окно на экран
+    // Выводим окно на экран
 
 //        JButton save = new JButton("Сохранить");
 //        add(save);
@@ -176,12 +188,6 @@ public class OpenFileFX extends JFrame implements ActionListener{
 //        });
 //
 //        JButton back = new JButton("Предыдущая страница");
-
-
-
-
-
-
 
 
 }
