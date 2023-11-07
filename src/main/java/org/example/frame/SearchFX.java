@@ -8,10 +8,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
-public class SearchFX extends JFrame {
+public class SearchFX extends OpenFileFX implements ActionListener {
     private JTextField textField;
-    int cnt;
+    private JLabel label;
+    private int index;
+    private int lengthIndexes;
+    private JTextPane textPane;
 
 
     public JTextField getTextField() {
@@ -24,29 +28,38 @@ public class SearchFX extends JFrame {
             setFocusPainted(false);
         }
     }
-    public SearchFX (WorkWithFile workWithFile, String list, JTextPane textPane){
+
+    public SearchFX(WorkWithFile workWithFile, String list, JTextPane textPane) {
         super("Поиск...");
-        cnt = 0;
+        this.indexes = new ArrayList<>();
+        index = 0;
+        this.textPane = textPane;
+        this.lengthIndexes = 0;
 
         setBounds(380, 55, 400, 60);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setLayout(new BorderLayout());
+        SearchFX.this.textPane.getText();
 
-        JLabel jLabel = new JLabel("Введите слово");
+        this.label = new JLabel("Введите слово");
         this.textField = new JTextField();
+        textField.setLayout(new GridLayout(1, 1));
         textField.setSize(new Dimension(100, 50));
 
         Border border = BorderFactory.createEtchedBorder();
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(1,2));
+        panel.setLayout(new GridLayout(1, 2));
         add(panel, BorderLayout.CENTER);
 //        panel.add(jLabel);
         panel.add(textField);
 
-        JLabel label = new JLabel(String.valueOf(cnt));
+        JLabel label = new JLabel((index) + "/" + lengthIndexes);
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
 
         JToolBar toolBar = new JToolBar();
+        toolBar.setLayout(new GridLayout(1, 4));
         MyButtons forward = new MyButtons("forward.png");
         forward.setToolTipText("Следующий");
         MyButtons back = new MyButtons("back.png");
@@ -55,28 +68,43 @@ public class SearchFX extends JFrame {
         search.setToolTipText("Поиск");
         toolBar.add(search);
         toolBar.add(back);
-        toolBar.add(label);
+        toolBar.add(label, BorderLayout.CENTER);
         toolBar.add(forward);
         add(toolBar, BorderLayout.EAST);
+
+//        forward.addActionListener(e -> {
+//            index = (index + 1) % (this.indexes.size());
+//            textPane.select(index, index + textField.getText().length());
+//            textPane.requestFocus();
+//        });
+//
+//        back.addActionListener(e -> {
+//            index = (index == 0) ? (this.indexes.size() - 1) : (index - 1);
+//            textPane.select(index, index + textField.getText().length());
+//            textPane.requestFocus();
+//        });
+
         search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-//                String searchWord = JOptionPane.showInputDialog(null, "",
-//                        "Search...", JOptionPane.QUESTION_MESSAGE);
-                int index = textPane.getText().indexOf(textField.getText());
-                while (!textPane.getText().isEmpty()) {
-                    index = textPane.getText().indexOf(textField.getText(), index + textField.getText().length());
-                    if (index > 0){
-                        textPane.select(index, index + textField.getText().length());
-                        textPane.requestFocus();
-                        cnt++;
-                    } else {
-                        break;
-                    }
-                }
-                System.out.println(cnt);
-
+                search();
             }
+        });
+
+        forward.addActionListener(e -> {
+            index = (index + 1) % (lengthIndexes);
+            label.setText((index + 1) + "/" + lengthIndexes);
+            setContent();
+//            textPane.select(textPane.getText().charAt(indexes.get(index)), (textPane.getText().charAt(index)) + textField.getText().length());
+//            textPane.requestFocus();
+        });
+
+        back.addActionListener(e -> {
+            index = (index == 0) ? (lengthIndexes - 1) : (index - 1);
+            label.setText((index + 1) + "/" + lengthIndexes);
+            setContent();
+//            textPane.select(textPane.getText().charAt(indexes.get(index)), (textPane.getText().charAt(index)) + textField.getText().length());
+//            textPane.requestFocus();
         });
 
 //        search.addActionListener(actionEvent -> {
@@ -96,5 +124,53 @@ public class SearchFX extends JFrame {
 //        p.add(new JButton("Ok"));
 //        p.add(new JPanel());
 //        add(p, BorderLayout.SOUTH);
+    }
+
+    private void setContent() {
+//        textPane.setText(String.valueOf(indexes.get(index)));
+        int v = indexes.get(index);
+        textPane.select(v, v + textField.getText().length());
+        textPane.requestFocus();
+    }
+
+    private void search() {
+        if (!this.flag) {
+            this.indexes.clear();
+        }
+        int index = textPane.getText().indexOf(textField.getText());
+        this.indexes.add(index);
+        while (!textPane.getText().isEmpty()) {
+            index = textPane.getText().indexOf(textField.getText(), index + textField.getText().length());
+            if (index > 0) {
+                this.indexes.add(index);
+//                        textPane.select(index, index + textField.getText().length());
+//                        textPane.requestFocus();
+//                        cnt++;
+            } else {
+                break;
+            }
+        }
+        setContent();
+        lengthIndexes = this.indexes.size();
+//                indexes.clear();
+        label.setText((index + 2) + "/" + lengthIndexes);
+
+//                    index = textPane.getText().indexOf(textField.getText());
+//                while (!textPane.getText().isEmpty()) {
+//                    index = textPane.getText().indexOf(textField.getText(), index + textField.getText().length());
+//                    if (index > 0) {
+//                        textPane.select(index, index + textField.getText().length());
+//                        textPane.requestFocus();
+////                        cnt++;
+//                    } else {
+//                        break;
+//                    }
+//                }
+        this.flag = false;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        index = Integer.parseInt(((JMenuItem) e.getSource()).getActionCommand());
     }
 }

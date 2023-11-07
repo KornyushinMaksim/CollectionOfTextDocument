@@ -9,15 +9,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class OpenFileFX extends JFrame implements ActionListener {
 
     private WorkWithFile workWithFile;
+    protected ArrayList<Integer> indexes;
     private JToolBar toolBar;
     private JPanel panel;
     private JTextPane textPane;
     private int index;
     private String[] lists;
+    protected boolean flag;
 
     //вложенный конструктор с кнопками
     class MyButtons extends JButton {
@@ -27,9 +30,14 @@ public class OpenFileFX extends JFrame implements ActionListener {
         }
     }
 
+    public OpenFileFX(String str){
+        super(str);
+    }
+
     public OpenFileFX(WorkWithFile workWithFile, String nameFile) {
         super(nameFile);
         this.workWithFile = workWithFile;
+        this.flag = false;
 //        this.workWithFile.readFile(pathDir, nameFile);
 //        setDefaultCloseOperation(HIDE_ON_CLOSE);
 //        setLocationRelativeTo(null);
@@ -72,10 +80,12 @@ public class OpenFileFX extends JFrame implements ActionListener {
         add(p, BorderLayout.SOUTH);
 
         forward.addActionListener(e -> {
+            this.flag = true;
             index = (index + 1) % (workWithFile.getBook().size());
             setContent();
         });
         back.addActionListener(e -> {
+            this.flag = true;
             index = (index == 0) ? (workWithFile.getBook().size() - 1) : (index - 1);
             setContent();
         });
