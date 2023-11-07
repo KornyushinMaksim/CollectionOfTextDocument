@@ -3,6 +3,7 @@ package org.example.frame;
 import org.example.text_new.WorkWithFile;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,20 +11,35 @@ import java.net.UnknownHostException;
 
 public class FileManagerFX extends JFrame {
     private WorkWithFile workWithFile;
+    private JPanel panel;
+    private JTextPane textPane;
     private JMenu content, program;
     private JMenuItem[] commands;
 
     public FileManagerFX(String pathDir) {
-        super("окно работы с файлом");
+        super("Окно работы с файлом");
+        setBounds(250, 100, 800, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(new GridBagLayout());
-        setSize(new Dimension(920, 600));
+        setLayout(new BorderLayout());
 
-        setVisible(true);
+        Border border = BorderFactory.createEtchedBorder();
+
+        this.panel = new JPanel();
+        this.panel.setLayout(new GridLayout(1, 2));
+        add(panel, BorderLayout.CENTER);
+
+        JScrollPane scrollPane = new JScrollPane();
+//        this.textPane = new JTextPane();
+//        scrollPane.getViewport().add(this.textPane);
+        panel.add(scrollPane);
+        JPanel p = new JPanel();
+        p.setLayout(new GridLayout(1, 3));
+        p.setBorder(border);
+        p.add(new JPanel());
+        add(p, BorderLayout.SOUTH);
 
         JButton createdFile = new JButton("Создать");
-        add(createdFile);
+        p.add(createdFile);
         createdFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -33,7 +49,7 @@ public class FileManagerFX extends JFrame {
                     try {
                         workWithFile = new WorkWithFile();
                         if (workWithFile.myCreatedNewFile(pathDir, nameFile)) {
-                            System.out.println("===");
+//                            System.out.println("===");
 //                            CreatedFileFX createdFileFX = new CreatedFileFX(workWithFile, pathDir, nameFile);
                         }
                     } catch (UnknownHostException ex) {
@@ -44,7 +60,7 @@ public class FileManagerFX extends JFrame {
         });
 
         JButton openFile = new JButton("Открыть");
-        add(openFile);
+        p.add(openFile);
         openFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,5 +75,8 @@ public class FileManagerFX extends JFrame {
                 }
             }
         });
+        p.add(new JPanel());
+        setVisible(true);
+
     }
 }

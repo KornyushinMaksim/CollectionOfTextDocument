@@ -19,7 +19,6 @@ public class OpenFileFX extends JFrame implements ActionListener {
     private JPanel panel;
     private JTextPane textPane;
     private int index;
-    private String[] lists;
     protected boolean flag;
 
     //вложенный конструктор с кнопками
@@ -45,7 +44,7 @@ public class OpenFileFX extends JFrame implements ActionListener {
 //        setSize(new Dimension(920, 600));
         this.index = 0;
 
-        setBounds(250, 50, 800, 700);
+        setBounds(300, 150, 800, 700);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -56,9 +55,12 @@ public class OpenFileFX extends JFrame implements ActionListener {
         back.setToolTipText("Предыдущая страница");
         MyButtons search = new MyButtons("search.png");
         search.setToolTipText("Поиск");
+        MyButtons replace = new MyButtons("replace.png");
+        search.setToolTipText("Замена");
         toolBar.add(search);
         toolBar.add(back);
         toolBar.add(forward);
+        toolBar.add(replace);
         add(this.toolBar, BorderLayout.NORTH);
 
         Border border = BorderFactory.createEtchedBorder();
@@ -66,6 +68,8 @@ public class OpenFileFX extends JFrame implements ActionListener {
         this.panel = new JPanel();
         this.panel.setLayout(new GridLayout(1, 2));
         add(panel, BorderLayout.CENTER);
+
+        JButton ok = new JButton("Ok");
 
         JScrollPane scrollPane = new JScrollPane();
         this.textPane = new JTextPane();
@@ -75,7 +79,7 @@ public class OpenFileFX extends JFrame implements ActionListener {
         p.setLayout(new GridLayout(1, 3));
         p.setBorder(border);
         p.add(new JPanel());
-        p.add(new JButton("Ok"));
+        p.add(ok);
         p.add(new JPanel());
         add(p, BorderLayout.SOUTH);
 
@@ -110,6 +114,7 @@ public class OpenFileFX extends JFrame implements ActionListener {
             SearchFX searchFX = new SearchFX(workWithFile, listForSearch, textPane);
 //            workWithFile.searchToFile(listForSearch, searchFX.getTextField().getText());
         });
+
 
 
         setContent();

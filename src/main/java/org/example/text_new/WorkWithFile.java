@@ -47,10 +47,18 @@ public class WorkWithFile {
         if (newFile.exists()) {
             flag = false;
             String text = "Файл с именем '" + nameFile + "' существует";
-            JOptionPane.showMessageDialog(null, text, "Предупреждение", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    text,
+                    "Предупреждение",
+                    JOptionPane.WARNING_MESSAGE);
         } else {
             try {
                 newFile.createNewFile();
+                JOptionPane.showMessageDialog(null,
+                        "Файл успешно создан",
+                        "Сообщение",
+                        JOptionPane.WARNING_MESSAGE);
+
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
