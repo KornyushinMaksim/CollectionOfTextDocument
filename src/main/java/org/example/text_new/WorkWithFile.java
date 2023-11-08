@@ -139,14 +139,12 @@ public class WorkWithFile {
 //    }
 
 
-    public void save() {
+    public void save(String textPane) {
         try (FileWriter fileWriter = new FileWriter(myFile.getPath() +
                 File.separator + myFile.getNameFile() +
                 ".txt", false);) {
 //            BufferedReader bufferedReader = new BufferedReader();
-            fileWriter.write(myFile.getPath() +
-                    File.separator + myFile.getNameFile() +
-                    ".txt");
+            fileWriter.write(textPane);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -163,8 +161,8 @@ public class WorkWithFile {
         int index = list.indexOf(str);
         words.add(index);
         while (list.isEmpty()) {
-           index = list.indexOf(str, index + 1);
-           words.add(index);
+            index = list.indexOf(str, index + 1);
+            words.add(index);
             System.out.println(index);
         }
     }

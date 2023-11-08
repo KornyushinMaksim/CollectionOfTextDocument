@@ -36,7 +36,7 @@ public class SearchFX extends OpenFileFX implements ActionListener {
         this.textPane = textPane;
         this.lengthIndexes = 0;
 
-        setBounds(380, 55, 600, 60);
+        setBounds(380, 55, 600, 80);
         setResizable(false);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -88,9 +88,7 @@ public class SearchFX extends OpenFileFX implements ActionListener {
         search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (!flag) {
-                    indexes.clear();
-                }
+                myClear();
                 int indexWord = textPane.getText().indexOf(textField.getText());
                 indexes.add(indexWord);
 //                setContent();
@@ -174,6 +172,12 @@ public class SearchFX extends OpenFileFX implements ActionListener {
 //                    }
 //                }
         this.flag = false;
+    }
+
+    private void myClear() {
+        if (!flag) {
+            indexes.clear();
+        }
     }
 
     @Override

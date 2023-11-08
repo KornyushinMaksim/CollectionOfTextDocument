@@ -1,7 +1,6 @@
 package org.example.frame;
 
 import org.example.text_new.WorkWithFile;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -70,6 +69,7 @@ public class OpenFileFX extends JFrame implements ActionListener {
         add(panel, BorderLayout.CENTER);
 
         JButton ok = new JButton("Ok");
+        JButton save = new JButton("Сохранить");
 
         JScrollPane scrollPane = new JScrollPane();
         this.textPane = new JTextPane();
@@ -79,16 +79,23 @@ public class OpenFileFX extends JFrame implements ActionListener {
         p.setLayout(new GridLayout(1, 3));
         p.setBorder(border);
         p.add(new JPanel());
+        p.add(save);
         p.add(ok);
         p.add(new JPanel());
         add(p, BorderLayout.SOUTH);
 
         forward.addActionListener(e -> {
+            if (this.indexes != null){
+                indexes.clear();
+            }
             this.flag = true;
             index = (index + 1) % (workWithFile.getBook().size());
             setContent();
         });
         back.addActionListener(e -> {
+            if (this.indexes != null){
+                indexes.clear();
+            }
             this.flag = true;
             index = (index == 0) ? (workWithFile.getBook().size() - 1) : (index - 1);
             setContent();
@@ -113,6 +120,36 @@ public class OpenFileFX extends JFrame implements ActionListener {
             String listForSearch = textPane.getText();
             SearchFX searchFX = new SearchFX(workWithFile, listForSearch, textPane);
 //            workWithFile.searchToFile(listForSearch, searchFX.getTextField().getText());
+        });
+
+        replace.addActionListener(e -> {
+            String strSource = JOptionPane.showInputDialog(null,
+                    "Заменить слово",
+                    "Замена",
+                    JOptionPane.QUESTION_MESSAGE);
+            String strDect = JOptionPane.showInputDialog(null,
+                    "Заменить на",
+                    "Замена",
+                    JOptionPane.QUESTION_MESSAGE);
+            String tmp1 = "";
+            for (int i = 0; i < workWithFile.getBook().size(); i++){
+                tmp1 = workWithFile.getBook().get(i).toString();
+                String s = tmp1.replaceAll(strSource, strDect);
+                System.out.println(s);
+            }
+//            String tmp = textPane.getText();
+//            tmp.replace(strSource, strDect);
+//            textPane.setText(tmp);
+            setContent();
+        });
+
+        save = new JButton("Сохранить");
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                workWithFile.save(textPane.getText());
+                dispose();
+            }
         });
 
 
@@ -164,15 +201,6 @@ public class OpenFileFX extends JFrame implements ActionListener {
 
     // Выводим окно на экран
 
-//        JButton save = new JButton("Сохранить");
-//        add(save);
-//        save.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                workWithFile.save();
-//                dispose();
-//            }
-//        });
 
 //        JButton delete = new JButton("Удалить");
 //        add(delete);
