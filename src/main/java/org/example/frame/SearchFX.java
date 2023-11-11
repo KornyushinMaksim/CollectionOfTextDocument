@@ -4,18 +4,20 @@ import org.example.text_new.WorkWithFile;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.TreeSelectionEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
-public class SearchFX extends OpenFileFX implements ActionListener {
+public class SearchFX extends OpenFileFX {
     private JTextField textField;
     private JLabel label;
     private int indexTap;
     private int lengthIndexes;
     private JTextPane textPane;
+    private WorkWithFile workWithFile;
 
 
     public JTextField getTextField() {
@@ -31,6 +33,7 @@ public class SearchFX extends OpenFileFX implements ActionListener {
 
     public SearchFX(WorkWithFile workWithFile, String list, JTextPane textPane) {
         super("Поиск...");
+        this.workWithFile = workWithFile;
         this.indexes = new ArrayList<>();
         indexTap = 0;
         this.textPane = textPane;
@@ -89,10 +92,10 @@ public class SearchFX extends OpenFileFX implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 myClear();
-                int indexWord = textPane.getText().indexOf(textField.getText());
-                indexes.add(indexWord);
+//                int indexWord = textPane.getText().indexOf(textField.getText());
+//                indexes.add(indexWord);
 //                setContent();
-                search(indexWord);
+                search(/*indexWord*/);
             }
         });
 
@@ -104,10 +107,10 @@ public class SearchFX extends OpenFileFX implements ActionListener {
 //            textPane.requestFocus();
         });
 
-        back.addActionListener(e -> {
-            indexTap = (indexTap == 0) ? (lengthIndexes - 1) : (indexTap - 1);
-            label.setText((indexTap + 1) + "/" + lengthIndexes);
-            setContent();
+            back.addActionListener(e -> {
+                        indexTap = (indexTap == 0) ? (lengthIndexes - 1) : (indexTap - 1);
+                        label.setText((indexTap + 1) + "/" + lengthIndexes);
+                        setContent();
 //            textPane.select(textPane.getText().charAt(indexes.get(index)), (textPane.getText().charAt(index)) + textField.getText().length());
 //            textPane.requestFocus();
         });
@@ -133,32 +136,42 @@ public class SearchFX extends OpenFileFX implements ActionListener {
 
     private void setContent() {
 //        textPane.setText(String.valueOf(indexes.get(index)));
-        int v = indexes.get(indexTap);
-        textPane.select(v, v + textField.getText().length());
-        textPane.requestFocus();
+        try {
+            int v = indexes.get(indexTap);
+            textPane.select(v, v + textField.getText().length());
+            textPane.requestFocus();
+        } catch (IndexOutOfBoundsException e){
+            this.indexes.clear();
+
+        }
+
     }
 
-    private void search(int indexWord) {
+    private void search(/*int indexWord*/) {
 //        if (!this.flag) {
 //            this.indexes.clear();
 //        }
 //        int index = textPane.getText().indexOf(textField.getText());
 //        this.indexes.add(index);
-        while (!textPane.getText().isEmpty()) {
-            indexWord = textPane.getText().indexOf(textField.getText(), indexWord + textField.getText().length());
-            if (indexWord > 0) {
-                this.indexes.add(indexWord);
+//
+            int indexWord = textPane.getText().indexOf(textField.getText());
+            indexes.add(indexWord);
+            while (!textPane.getText().isEmpty()) {
+                indexWord = textPane.getText().indexOf(textField.getText(), indexWord + textField.getText().length());
+                if (indexWord > 0) {
+                    this.indexes.add(indexWord);
 //                        textPane.select(index, index + textField.getText().length());
 //                        textPane.requestFocus();
 //                        cnt++;
-            } else {
-                break;
+                } else {
+                    break;
+                }
             }
-        }
-        setContent();
-        lengthIndexes = this.indexes.size();
+            lengthIndexes = this.indexes.size();
 //                indexes.clear();
-        label.setText((indexWord + 2) + "/" + lengthIndexes);
+            label.setText((indexWord + 2) + "/" + lengthIndexes);
+            setContent();
+
 
 //                    index = textPane.getText().indexOf(textField.getText());
 //                while (!textPane.getText().isEmpty()) {
@@ -175,7 +188,7 @@ public class SearchFX extends OpenFileFX implements ActionListener {
     }
 
     private void myClear() {
-        if (!flag) {
+        if (!flag || this.indexes == null) {
             indexes.clear();
         }
     }
@@ -184,4 +197,6 @@ public class SearchFX extends OpenFileFX implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         indexTap = Integer.parseInt(((JMenuItem) e.getSource()).getActionCommand());
     }
+
+
 }

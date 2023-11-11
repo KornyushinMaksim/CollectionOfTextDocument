@@ -5,13 +5,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class WorkToFile {
     private MyFile myFile;      //мой класс где хранится вся инфа и текст
     private File file;      //класс для работы с файлами и папками
+    private HashSet<MyFile> myFiles;
 
     public WorkToFile(String nameFile, String pathFile) throws UnknownHostException {
         this.myFile = new MyFile(nameFile, pathFile);
+        this.myFiles = new HashSet<>();
     }
 
     public File getFile() {

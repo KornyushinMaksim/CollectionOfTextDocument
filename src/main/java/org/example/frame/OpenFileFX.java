@@ -3,6 +3,7 @@ package org.example.frame;
 import org.example.text_new.WorkWithFile;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.TreeSelectionEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +36,8 @@ public class OpenFileFX extends JFrame implements ActionListener {
     public OpenFileFX(WorkWithFile workWithFile, String nameFile) {
         super(nameFile);
         this.workWithFile = workWithFile;
-        this.flag = false;
+        this.flag = true;
+//        this.indexes = new ArrayList<>();
 //        this.workWithFile.readFile(pathDir, nameFile);
 //        setDefaultCloseOperation(HIDE_ON_CLOSE);
 //        setLocationRelativeTo(null);
@@ -54,7 +56,7 @@ public class OpenFileFX extends JFrame implements ActionListener {
         back.setToolTipText("Предыдущая страница");
         MyButtons search = new MyButtons("search.png");
         search.setToolTipText("Поиск");
-        MyButtons replace = new MyButtons("replace.png");
+        MyButtons replace = new MyButtons("replace1.png");
         search.setToolTipText("Замена");
         toolBar.add(search);
         toolBar.add(back);
@@ -85,17 +87,17 @@ public class OpenFileFX extends JFrame implements ActionListener {
         add(p, BorderLayout.SOUTH);
 
         forward.addActionListener(e -> {
-            if (this.indexes != null){
-                indexes.clear();
-            }
+//            if (!flag){
+//                indexes.clear();
+//            }
             this.flag = true;
             index = (index + 1) % (workWithFile.getBook().size());
             setContent();
         });
         back.addActionListener(e -> {
-            if (this.indexes != null){
-                indexes.clear();
-            }
+//            if (!flag){
+//                indexes.clear();
+//            }
             this.flag = true;
             index = (index == 0) ? (workWithFile.getBook().size() - 1) : (index - 1);
             setContent();
@@ -123,59 +125,28 @@ public class OpenFileFX extends JFrame implements ActionListener {
         });
 
         replace.addActionListener(e -> {
-            String strSource = JOptionPane.showInputDialog(null,
-                    "Заменить слово",
-                    "Замена",
-                    JOptionPane.QUESTION_MESSAGE);
-            String strDect = JOptionPane.showInputDialog(null,
-                    "Заменить на",
-                    "Замена",
-                    JOptionPane.QUESTION_MESSAGE);
-            String tmp1 = "";
-            for (int i = 0; i < workWithFile.getBook().size(); i++){
-                tmp1 = workWithFile.getBook().get(i).toString();
-                String s = tmp1.replaceAll(strSource, strDect);
-                System.out.println(s);
-            }
+//            String strSource = JOptionPane.showInputDialog(null,
+//                    "Заменить слово",
+//                    "Замена",
+//                    JOptionPane.QUESTION_MESSAGE);
+//            String strDect = JOptionPane.showInputDialog(null,
+//                    "Заменить на",
+//                    "Замена",
+//                    JOptionPane.QUESTION_MESSAGE);
+//            for (int i = 0; i < workWithFile.getBook().size(); i++){
+//                String s = workWithFile.getBook().get(i).toString().replaceAll(strSource, strDect);
+//                workWithFile.getBook().get(i).delete(0, workWithFile.getBook().get(i).length());
+//                workWithFile.getBook().get(i).append(s);
+//            }
+
 //            String tmp = textPane.getText();
 //            tmp.replace(strSource, strDect);
 //            textPane.setText(tmp);
+            workWithFile.replace();
             setContent();
         });
 
-        save = new JButton("Сохранить");
         save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                workWithFile.save(textPane.getText());
-                dispose();
-            }
-        });
-
-
-
-        setContent();
-        setVisible(true);
-
-    }
-
-    private void setContent() {
-//        try {
-        textPane.setText(workWithFile.getBook().get(index).toString());
-
-//            textPane.setPage(lists[index]);
-//        } catch (IOException e) {
-//            textPane.setText(lists[index]);
-////            JOptionPane.showMessageDialog(null, "Страница не найдена", "Сообщение", JOptionPane.INFORMATION_MESSAGE);
-//        }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        index = Integer.parseInt(((JMenuItem) e.getSource()).getActionCommand());
-        setContent();
-    }
-
 
 //        // Cоздание многострочных полей
 //        JTextArea area1 = new JTextArea(workWithFile.getBook().get(index).toString(), 45, 60);
@@ -231,6 +202,37 @@ public class OpenFileFX extends JFrame implements ActionListener {
 //        });
 //
 //        JButton back = new JButton("Предыдущая страница");
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                workWithFile.save(textPane.getText());
+                dispose();
+            }
+        });
+
+
+
+        setContent();
+        setVisible(true);
+
+    }
+
+    private void setContent() {
+//        try {
+        textPane.setText(workWithFile.getBook().get(index).toString());
+//            textPane.setPage(lists[index]);
+//        } catch (IOException e) {
+//            textPane.setText(lists[index]);
+////            JOptionPane.showMessageDialog(null, "Страница не найдена", "Сообщение", JOptionPane.INFORMATION_MESSAGE);
+//        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        index = Integer.parseInt(((JMenuItem) e.getSource()).getActionCommand());
+        setContent();
+    }
 
 
 }

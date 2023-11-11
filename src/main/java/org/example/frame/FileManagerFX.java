@@ -47,8 +47,9 @@ public class FileManagerFX extends JFrame {
                         "Введите имя файла", "Создание файла TXT", JOptionPane.QUESTION_MESSAGE);
                 if (nameFile != null) {
                     try {
-                        workWithFile = new WorkWithFile();
-                        if (workWithFile.myCreatedNewFile(pathDir, nameFile)) {
+                        workWithFile = new WorkWithFile(pathDir, nameFile);
+                        if (workWithFile.myCreatedNewFile()) {
+                            OpenFileFX openFileFX = new OpenFileFX(workWithFile, nameFile);
 //                            System.out.println("===");
 //                            CreatedFileFX createdFileFX = new CreatedFileFX(workWithFile, pathDir, nameFile);
                         }
@@ -67,8 +68,9 @@ public class FileManagerFX extends JFrame {
                 String nameFile = JOptionPane.showInputDialog(null,
                         "Введите имя файла", "Открытие файла TXT", JOptionPane.QUESTION_MESSAGE);
                 try {
-                    workWithFile = new WorkWithFile();
-                    workWithFile.openList(pathDir, nameFile);
+                    workWithFile = new WorkWithFile(pathDir, nameFile);
+//                    workWithFile.openList();
+                    workWithFile.readFile(pathDir, nameFile);
                     OpenFileFX openFileFX = new OpenFileFX(workWithFile, nameFile);
                 } catch (UnknownHostException ex) {
                     throw new RuntimeException(ex);

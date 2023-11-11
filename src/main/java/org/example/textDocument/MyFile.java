@@ -21,7 +21,7 @@ public class MyFile {
         this.nameFile = nameFile;
         this.pathDir = pathDir;
         this.author = InetAddress.getLocalHost().getHostName();
-//        this.sizeFile = String.format("%.2f",(float)nameFile.length() / 1000);
+        this.sizeFile = String.format("%.2f",(float)nameFile.length() / 1000);
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         this.dateOfCreation = format.format(new Date());
     }
@@ -34,6 +34,18 @@ public class MyFile {
         return pathDir;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getSizeFile() {
+        return sizeFile;
+    }
+
+    public String getDateOfCreation() {
+        return dateOfCreation;
+    }
+
     public void setSizeFile(String sizeFile) {
         this.sizeFile = sizeFile;
     }
@@ -41,9 +53,9 @@ public class MyFile {
     @Override
     public String toString() {
         return this.nameFile +
-                "\t" + author +
-                "\t" + this.sizeFile + " Kb" +
-                "\t" + this.dateOfCreation;
+                "\t\t\t\t\t\t" + author +
+                "\t\t\t\t\t\t" + this.sizeFile + " Kb" +
+                "\t\t\t\t\t\t" + this.dateOfCreation;
     }
 //        @Override
 //    public String toString() {
