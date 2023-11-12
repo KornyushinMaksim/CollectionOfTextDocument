@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class WorkWithFile {
@@ -59,7 +60,7 @@ public class WorkWithFile {
     public boolean myCreatedNewFile() {
         boolean flag = true;
         File newFile = new File(this.pathDir + File.separator + this.nameFile + ".txt");
-//        this.myFile.setSizeFile(String.format("%.2f", (float) this.newFile.length() / 1000));
+        this.myFile.setSizeFile(String.format("%.2f", (float) this.newFile.length() / 1000));
         if (newFile.exists()) {
             flag = false;
             String text = "Файл с именем '" + this.nameFile + "' существует";
@@ -176,7 +177,7 @@ public class WorkWithFile {
         }
     }
 
-    public void sortFiles() {
+    public void sortFiles(String string) {
         File folder = new File(pathDir);
     }
 
@@ -200,10 +201,10 @@ public class WorkWithFile {
 //        book.add(list);
 //    }
 
-    public void save(String textPane) {
+    public void save(String textPane, String nameFile) {
         try (FileWriter fileWriter = new FileWriter(this.pathDir +
                 File.separator +
-                this.nameFile +
+                nameFile +
                 ".txt", false);) {
             fileWriter.write(textPane);
         } catch (IOException e) {
@@ -211,17 +212,17 @@ public class WorkWithFile {
         }
     }
 
-    public void searchToFile(String list, String str) {
-        ArrayList<Integer> words = new ArrayList<>();
-        int cnt = 0;
-        int index = list.indexOf(str);
-        words.add(index);
-        while (list.isEmpty()) {
-            index = list.indexOf(str, index + 1);
-            words.add(index);
-            System.out.println(index);
-        }
-    }
+//    public void searchToFile(String list, String str) {
+//        ArrayList<Integer> words = new ArrayList<>();
+//        int cnt = 0;
+//        int index = list.indexOf(str);
+//        words.add(index);
+//        while (list.isEmpty()) {
+//            index = list.indexOf(str, index + 1);
+//            words.add(index);
+//            System.out.println(index);
+//        }
+//    }
 
     public void replace(String nameFile) {
         String strSource = JOptionPane.showInputDialog(null,
@@ -249,4 +250,14 @@ public class WorkWithFile {
         }
         return null;
     }
+
+//    public void sort(Comparator<MyFile> stringComparator){
+//        for (int i = 0; i < this.myFiles.size() - 1; i++){
+//            if(stringComparator.compare(this.myFiles.get(i), this.myFiles.get(i + 1)) > 0){
+//                MyFile tmp = this.myFiles.get(i);
+//                this.myFiles.r
+//                this.myFiles.add(i + 1, tmp);
+//            }
+//        }
+//    }
 }

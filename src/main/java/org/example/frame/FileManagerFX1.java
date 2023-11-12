@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.UnknownHostException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class FileManagerFX1 extends JFrame {
     private WorkWithFile workWithFile;
@@ -95,8 +98,8 @@ public class FileManagerFX1 extends JFrame {
                 String nameFile = JOptionPane.showInputDialog(null,
                         "Введите имя файла", "Создание файла TXT", JOptionPane.QUESTION_MESSAGE);
                 if (nameFile != null) {
-                    File file = new File(pathDir + File.separator + nameFile);
-                    workWithFile.getMyFile().setSizeFile(String.format("%.2f", (float) file.length() / 1000));
+//                    File file = new File(pathDir + File.separator + nameFile);
+//                    workWithFile.getMyFile().setSizeFile(String.format("%.2f", (float) file.length() / 1000));
                     if (workWithFile.myCreatedNewFile()) {
                         workWithFile.setMyFiles(workWithFile.getMyFile());
                         top.add(new DefaultMutableTreeNode(workWithFile.getMyFile().toString()));
@@ -126,6 +129,7 @@ public class FileManagerFX1 extends JFrame {
 
             }
         });
+
         p.add(new JPanel());
         setVisible(true);
 

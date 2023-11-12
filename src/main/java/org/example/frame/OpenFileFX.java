@@ -108,7 +108,7 @@ public class OpenFileFX extends JFrame implements ActionListener {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                workWithFile.save(textPane.getText());
+                workWithFile.save(textPane.getText(), nameFile);
                 dispose();
             }
         });
