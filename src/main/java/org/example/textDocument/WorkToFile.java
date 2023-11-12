@@ -15,11 +15,12 @@ public class WorkToFile {
     public WorkToFile(String nameFile, String pathFile) throws UnknownHostException {
         this.myFile = new MyFile(nameFile, pathFile);
         this.myFiles = new HashSet<>();
+        System.out.println(MyFile.class.getName());
     }
 
-    public File getFile() {
-        return file;
-    }
+//    public File getFile() {
+//        return file;
+//    }
 
     public MyFile getMyFile() {
         return myFile;
@@ -27,10 +28,10 @@ public class WorkToFile {
 
     //создание нового файла по пути
     public String createdNewFile() throws IOException {
-        this.file = new File(this.myFile.getPath(), this.myFile.getNameFile() + ".txt");
-        this.myFile.setSizeFile(String.format("%.2f", (float) this.file.length() / 1000));
+        File file = new File(this.myFile.getPathDir(), this.myFile.getNameFile() + ".txt");
+        this.myFile.setSizeFile(String.format("%.2f", (float) file.length() / 1000));
         try {
-            boolean created = this.file.createNewFile();
+            boolean created = file.createNewFile();
             return "file created";
         } catch (Exception e) {
             return "file not created";

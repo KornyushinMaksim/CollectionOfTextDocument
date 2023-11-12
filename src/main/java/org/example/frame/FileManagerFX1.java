@@ -2,26 +2,15 @@ package org.example.frame;
 
 import org.example.textDocument.MyFile;
 import org.example.text_new.WorkWithFile;
+
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.io.File;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class FileManagerFX1 extends JFrame {
     private WorkWithFile workWithFile;
@@ -33,14 +22,22 @@ public class FileManagerFX1 extends JFrame {
     public FileManagerFX1(String pathDir) {
         super("Окно работы с файлом");
 
-        try {
-            this.workWithFile = new WorkWithFile(pathDir, "q");
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
+        this.workWithFile = new WorkWithFile(pathDir);
         setBounds(250, 100, 800, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+
+        JToolBar toolBar = new JToolBar("Фильтр");
+        MyButtons size = new MyButtons("size.png");
+        size.setToolTipText("Фильтр по размеру");
+        MyButtons author = new MyButtons("author.png");
+        author.setToolTipText("Фильтр по автору");
+        MyButtons date = new MyButtons("date.png");
+        date.setToolTipText("Фильтр по дате");
+        toolBar.add(size);
+        toolBar.add(author);
+        toolBar.add(date);
+        add(toolBar, BorderLayout.NORTH);
 
         Border border = BorderFactory.createEtchedBorder();
 
@@ -51,31 +48,21 @@ public class FileManagerFX1 extends JFrame {
         //создание дерева папок
         DefaultMutableTreeNode top = new DefaultMutableTreeNode(pathDir);
         File folder = new File(pathDir);
-        WorkWithFile workWithFile1 = null;
-        for (int i = 0; i < folder.listFiles().length; i++){
-            try {
-                workWithFile1 = new WorkWithFile(pathDir, folder.listFiles()[i].getName());
-                workWithFile1.getMyFile().setSizeFile(String.format("%.2f", (float) folder.listFiles()[i].length() / 1000));
-
-                workWithFile.setMyFiles(workWithFile1.getMyFile());
-            } catch (UnknownHostException e) {
-                throw new RuntimeException(e);
-            }
+        for (int i = 0; i < folder.listFiles().length; i++) {
+            MyFile tmpMyFile = new MyFile(pathDir, folder.listFiles()[i].getName());
+            //добавляем элемент в массив MyFiles
+            workWithFile.setMyFiles(tmpMyFile);
+            workWithFile.readFile(pathDir, folder.listFiles()[i].getName());
+            //у добавленного элемента инициализируем поле size
+            workWithFile.getMyFiles().get(i).setSizeFile(String.format("%.2f", (float) folder.listFiles()[i].length() / 1000));
+            //добавляем эл-т в tree
             top.add(new DefaultMutableTreeNode(workWithFile.getMyFiles().get(i).toString()));
         }
 
-//        for (File file : folder.listFiles()) {
-//            top.add(new DefaultMutableTreeNode(file.getName()));
-//            System.out.println(workWithFile.getMyFile().toString());
-//
-//        }
         JTree tree = new JTree(top);
         JScrollPane scrollPane = new JScrollPane(tree);
         panel.add(scrollPane);
-        //
-//        String[] strings = new String[5];
-//        Object[][] myFiles = new String[5][];
-//        JTable table = new JTable(myFiles, strings);
+
         JPanel p = new JPanel();
         p.setLayout(new GridLayout(1, 3));
         p.setBorder(border);
@@ -108,21 +95,13 @@ public class FileManagerFX1 extends JFrame {
                 String nameFile = JOptionPane.showInputDialog(null,
                         "Введите имя файла", "Создание файла TXT", JOptionPane.QUESTION_MESSAGE);
                 if (nameFile != null) {
-                    try {
-                        workWithFile = new WorkWithFile(pathDir, nameFile);
-                        File file = new File(pathDir + File.separator + nameFile);
-                        workWithFile.getMyFile().setSizeFile(String.format("%.2f", (float) file.length() / 1000));
-                        if (workWithFile.myCreatedNewFile()) {
-                            workWithFile.setMyFiles(workWithFile.getMyFile());
-                            top.add(new DefaultMutableTreeNode(workWithFile.getMyFile().toString()));
-                            tree.updateUI();
+                    File file = new File(pathDir + File.separator + nameFile);
+                    workWithFile.getMyFile().setSizeFile(String.format("%.2f", (float) file.length() / 1000));
+                    if (workWithFile.myCreatedNewFile()) {
+                        workWithFile.setMyFiles(workWithFile.getMyFile());
+                        top.add(new DefaultMutableTreeNode(workWithFile.getMyFile().toString()));
+                        tree.updateUI();
 
-//                            OpenFileFX openFileFX = new OpenFileFX(workWithFile, nameFile);
-//                            System.out.println("===");
-//                            CreatedFileFX createdFileFX = new CreatedFileFX(workWithFile, pathDir, nameFile);
-                        }
-                    } catch (UnknownHostException ex) {
-                        throw new RuntimeException(ex);
                     }
                 }
             }
@@ -135,15 +114,16 @@ public class FileManagerFX1 extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String nameFile = JOptionPane.showInputDialog(null,
                         "Введите имя файла", "Открытие файла TXT", JOptionPane.QUESTION_MESSAGE);
-                try {
-                    workWithFile = new WorkWithFile(pathDir, nameFile);
-//                    workWithFile.openList();
-                    workWithFile.readFile(pathDir, nameFile);
+                String tmpNameFile = workWithFile.getItem(nameFile + ".txt").getNameFile();
+                if (tmpNameFile != null) {
+//                    workWithFile.readFile(pathDir, nameFile + ".txt");
                     OpenFileFX openFileFX = new OpenFileFX(workWithFile, nameFile);
-
-                } catch (UnknownHostException ex) {
-                    throw new RuntimeException(ex);
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Файла с таким именем не существует",
+                            "Сообщение", JOptionPane.INFORMATION_MESSAGE);
                 }
+
             }
         });
         p.add(new JPanel());

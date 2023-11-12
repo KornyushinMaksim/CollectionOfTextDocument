@@ -1,5 +1,6 @@
 package org.example.frame;
 
+import org.example.textDocument.MyFile;
 import org.example.text_new.WorkWithFile;
 
 import javax.swing.*;
@@ -13,10 +14,12 @@ import java.util.ArrayList;
 
 public class SearchFX extends OpenFileFX {
     private JTextField textField;
+    protected ArrayList<Integer> indexes;
     private JLabel label;
     private int indexTap;
     private int lengthIndexes;
     private JTextPane textPane;
+    private MyFile myFile;
     private WorkWithFile workWithFile;
 
 
@@ -24,16 +27,17 @@ public class SearchFX extends OpenFileFX {
         return textField;
     }
 
-    class MyButtons extends JButton {
-        MyButtons(String name) {
-            super(new ImageIcon("icon" + File.separator + name));
-            setFocusPainted(false);
-        }
-    }
+//    class MyButtons extends JButton {
+//        MyButtons(String name) {
+//            super(new ImageIcon("icon" + File.separator + name));
+//            setFocusPainted(false);
+//        }
+//    }
 
-    public SearchFX(WorkWithFile workWithFile, String list, JTextPane textPane) {
+    public SearchFX(WorkWithFile workWithFile, String list, JTextPane textPane, MyFile myFile) {
         super("Поиск...");
         this.workWithFile = workWithFile;
+        this.myFile = myFile;
         this.indexes = new ArrayList<>();
         indexTap = 0;
         this.textPane = textPane;
@@ -154,7 +158,8 @@ public class SearchFX extends OpenFileFX {
 //        int index = textPane.getText().indexOf(textField.getText());
 //        this.indexes.add(index);
 //
-            int indexWord = textPane.getText().indexOf(textField.getText());
+        int indexWord = 0;
+            indexWord = textPane.getText().indexOf(textField.getText());
             indexes.add(indexWord);
             while (!textPane.getText().isEmpty()) {
                 indexWord = textPane.getText().indexOf(textField.getText(), indexWord + textField.getText().length());

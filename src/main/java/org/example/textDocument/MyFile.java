@@ -13,24 +13,28 @@ public class MyFile {
     private String author;
     private String sizeFile;
     private String dateOfCreation;
-    private String[] strings;
-    private ArrayList <String> texts;
-    private ArrayList <String> lists;
+    private StringBuilder strings;
+    private ArrayList <StringBuilder> book;
 
-    public MyFile(String pathDir, String nameFile) throws UnknownHostException {
+    public MyFile(String pathDir, String nameFile) {
         this.nameFile = nameFile;
         this.pathDir = pathDir;
-        this.author = InetAddress.getLocalHost().getHostName();
+        try {
+            this.author = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
         this.sizeFile = String.format("%.2f",(float)nameFile.length() / 1000);
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         this.dateOfCreation = format.format(new Date());
+        this.book = new ArrayList<>();
     }
 
     public String getNameFile() {
         return nameFile;
     }
 
-    public String getPath() {
+    public String getPathDir() {
         return pathDir;
     }
 
@@ -46,8 +50,24 @@ public class MyFile {
         return dateOfCreation;
     }
 
+    public StringBuilder getStrings() {
+        return strings;
+    }
+
+    public ArrayList<StringBuilder> getBook() {
+        return book;
+    }
+
+    public ArrayList<StringBuilder> getList() {
+        return book;
+    }
+
     public void setSizeFile(String sizeFile) {
         this.sizeFile = sizeFile;
+    }
+
+    public void setBook(String str){
+        this.book.add(new StringBuilder(str));
     }
 
     @Override
@@ -57,11 +77,5 @@ public class MyFile {
                 "\t\t\t\t\t\t" + this.sizeFile + " Kb" +
                 "\t\t\t\t\t\t" + this.dateOfCreation;
     }
-//        @Override
-//    public String toString() {
-//        return "\nnameFile: " + this.nameFile +
-//                "\nauthor: " + author +
-//                "\nsizeFile: " + this.sizeFile + " Kb" +
-//                "\ndate: " + this.dateOfCreation;
-//    }
+
 }
