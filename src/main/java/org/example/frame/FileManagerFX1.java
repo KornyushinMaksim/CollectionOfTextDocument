@@ -100,6 +100,20 @@ public class FileManagerFX1 extends JFrame {
                 }
             }
         });
+
+        /*size.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Collections.sort(workWithFile.getMyFiles, new Comparator() {
+                    @Override
+                    public int compare(MyFile o1, MyFile o2){
+                        return o1.getFileSize() - o2.getFileSeze()
+                    }
+                }
+            }
+        }*/
+
+               
         p.add(new JPanel());
         setVisible(true);
     }
