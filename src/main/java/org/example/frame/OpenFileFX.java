@@ -4,17 +4,12 @@ import org.example.textDocument.MyFile;
 import org.example.text_new.WorkWithFile;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.TreeSelectionEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class OpenFileFX extends JFrame implements ActionListener {
 
-    private WorkWithFile workWithFile;
     private MyFile tmpMyFile;
     private JToolBar toolBar;
     private JPanel panel;
@@ -23,21 +18,12 @@ public class OpenFileFX extends JFrame implements ActionListener {
     private String nameFile;
     protected boolean flag;
 
-    //вложенный конструктор с кнопками
-//    class MyButtons extends JButton {
-//        MyButtons(String name) {
-//            super(new ImageIcon("icon" + File.separator + name));
-//            setFocusPainted(false);
-//        }
-//    }
-
-    public OpenFileFX(String str){
+    public OpenFileFX(String str) {
         super(str);
     }
 
     public OpenFileFX(WorkWithFile workWithFile, String nameFile) {
         super(nameFile);
-//        this.workWithFile = workWithFile;
         this.tmpMyFile = workWithFile.getItem(nameFile + ".txt");
         this.flag = true;
         this.index = 0;
@@ -114,7 +100,6 @@ public class OpenFileFX extends JFrame implements ActionListener {
         });
         setContent();
         setVisible(true);
-
     }
 
     private void setContent() {
@@ -123,7 +108,6 @@ public class OpenFileFX extends JFrame implements ActionListener {
         } else {
             textPane.getText();
         }
-
     }
 
     @Override
@@ -131,6 +115,4 @@ public class OpenFileFX extends JFrame implements ActionListener {
         index = Integer.parseInt(((JMenuItem) e.getSource()).getActionCommand());
         setContent();
     }
-
-
 }

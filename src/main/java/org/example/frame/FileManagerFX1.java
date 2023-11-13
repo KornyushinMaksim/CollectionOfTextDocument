@@ -10,10 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.UnknownHostException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class FileManagerFX1 extends JFrame {
     private WorkWithFile workWithFile;
@@ -24,7 +20,6 @@ public class FileManagerFX1 extends JFrame {
 
     public FileManagerFX1(String pathDir) {
         super("Окно работы с файлом");
-
         this.workWithFile = new WorkWithFile(pathDir);
         setBounds(250, 100, 800, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -72,24 +67,6 @@ public class FileManagerFX1 extends JFrame {
         p.add(new JPanel());
         add(p, BorderLayout.SOUTH);
 
-//        tree.addTreeSelectionListener(new TreeSelectionListener() {
-//            @Override
-//            public void valueChanged(TreeSelectionEvent tse) {
-////                try {
-////                    workWithFile = new WorkWithFile(pathDir, "q");
-//                File file = new File(pathDir + File.separator + "q.txt");
-//                workWithFile.getMyFile().setSizeFile(String.format("%.2f", (float) file.length() / 1000));
-////                } catch (UnknownHostException e) {
-////                    throw new RuntimeException(e);
-////                }
-//                workWithFile.readFile(pathDir, "q");
-//                System.out.println(workWithFile.getMyFile().toString());
-//                OpenFileFX openFileFX = new OpenFileFX(workWithFile, tree.getName());
-//
-//                //                    workWithFile.openList();
-//            }
-//        });
-
         JButton createdFile = new JButton("Создать");
         p.add(createdFile);
         createdFile.addActionListener(new ActionListener() {
@@ -98,13 +75,9 @@ public class FileManagerFX1 extends JFrame {
                 String nameFile = JOptionPane.showInputDialog(null,
                         "Введите имя файла", "Создание файла TXT", JOptionPane.QUESTION_MESSAGE);
                 if (nameFile != null) {
-//                    File file = new File(pathDir + File.separator + nameFile);
-//                    workWithFile.getMyFile().setSizeFile(String.format("%.2f", (float) file.length() / 1000));
-                    if (workWithFile.myCreatedNewFile()) {
-                        workWithFile.setMyFiles(workWithFile.getMyFile());
-                        top.add(new DefaultMutableTreeNode(workWithFile.getMyFile().toString()));
+                    if (workWithFile.myCreatedNewFile(nameFile)) {
+                        top.add(new DefaultMutableTreeNode(workWithFile.getItem(nameFile + ".txt").toString()));
                         tree.updateUI();
-
                     }
                 }
             }
@@ -117,21 +90,17 @@ public class FileManagerFX1 extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String nameFile = JOptionPane.showInputDialog(null,
                         "Введите имя файла", "Открытие файла TXT", JOptionPane.QUESTION_MESSAGE);
-                String tmpNameFile = workWithFile.getItem(nameFile + ".txt").getNameFile();
-                if (tmpNameFile != null) {
-//                    workWithFile.readFile(pathDir, nameFile + ".txt");
+                try {
+                    String tmpNameFile = workWithFile.getItem(nameFile + ".txt").getNameFile();
                     OpenFileFX openFileFX = new OpenFileFX(workWithFile, nameFile);
-                } else {
+                } catch (NullPointerException ew) {
                     JOptionPane.showMessageDialog(null,
                             "Файла с таким именем не существует",
                             "Сообщение", JOptionPane.INFORMATION_MESSAGE);
                 }
-
             }
         });
-
         p.add(new JPanel());
         setVisible(true);
-
     }
 }

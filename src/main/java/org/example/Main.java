@@ -14,33 +14,15 @@
 package org.example;
 import org.example.frame.FileManagerFX1;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-
-import static java.lang.Thread.sleep;
-
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        String nameFile1 = "myFile123";
+    public static void main(String[] args) {
+//        String pathDir = JOptionPane.showInputDialog(null,
+//                "Задайте путь к папке",
+//                "Путь к директории",
+//                JOptionPane.QUESTION_MESSAGE);
+
         String pathDir = "Новая папка2";
+        new FileManagerFX1(pathDir);
 
-//        try(FileReader reader = new FileReader(pathDir + File.separator + "r.txt"))
-//        {
-//            // читаем посимвольно
-//            int c;
-//            while((c=reader.read())!=-1){
-//
-//                System.out.print((char)c);
-//            }
-//        }
-//        catch(IOException ex){
-//
-//            System.out.println(ex.getMessage());
-//        }
-
-        FileManagerFX1 fm = new FileManagerFX1(pathDir);
-
-//        OpenFileFX areaTest = new OpenFileFX(myFile, pathDir);   //откратие файла в окне
     }
 }

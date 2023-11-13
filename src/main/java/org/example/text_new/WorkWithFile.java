@@ -4,49 +4,15 @@ import org.example.textDocument.MyFile;
 
 import javax.swing.*;
 import java.io.*;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
 public class WorkWithFile {
-    private MyFile myFile;      //мой класс где хранится вся инфа и текст
-    private File newFile;      //класс для работы с файлами и папками
-
     private String pathDir;
-    private String nameFile;
-    private StringBuilder list;
-    private StringBuilder textFromFile;
-    private ArrayList<StringBuilder> book;
     private ArrayList<MyFile> myFiles;
 
-
-    public WorkWithFile(String pathDir/*, String nameFile*/) /*throws UnknownHostException*/ {
+    public WorkWithFile(String pathDir) {
         this.pathDir = pathDir;
-//        this.nameFile = nameFile;
-//        this.myFile = new MyFile(pathDir, nameFile);
         this.myFiles = new ArrayList<>();
-    }
-
-//    public File getNewFile() {
-//        return newFile;
-//    }
-
-//    public File getFile() {
-//        return newFile;
-//    }
-
-    public StringBuilder getList() {
-        return list;
-    }
-
-    public ArrayList<StringBuilder> getBook() {
-        return book;
-    }
-
-    public MyFile getMyFile() {
-        return myFile;
     }
 
     public ArrayList<MyFile> getMyFiles() {
@@ -57,20 +23,21 @@ public class WorkWithFile {
         this.myFiles.add(myFiles);
     }
 
-    public boolean myCreatedNewFile() {
+    public boolean myCreatedNewFile(String nameFile) {
         boolean flag = true;
-        File newFile = new File(this.pathDir + File.separator + this.nameFile + ".txt");
-        this.myFile.setSizeFile(String.format("%.2f", (float) this.newFile.length() / 1000));
-        if (newFile.exists()) {
+        File file = new File(pathDir + File.separator + nameFile + ".txt");
+        setMyFiles(new MyFile(pathDir, nameFile + ".txt"));
+        getItem(nameFile + ".txt").setSizeFile(String.format("%.2f", (float) file.length() / 1000));
+        if (file.exists()) {
             flag = false;
-            String text = "Файл с именем '" + this.nameFile + "' существует";
+            String text = "Файл с именем '" + nameFile + "' существует";
             JOptionPane.showMessageDialog(null,
                     text,
                     "Предупреждение",
                     JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-                newFile.createNewFile();
+                file.createNewFile();
                 JOptionPane.showMessageDialog(null,
                         "Файл успешно создан",
                         "Сообщение",
@@ -80,16 +47,8 @@ public class WorkWithFile {
                 throw new RuntimeException(ex);
             }
         }
-//        this.files.add(newFile);
         return flag;
     }
-
-    //первое открытие
-//    public String openList() {
-//        readFile();
-//        String str = this.book.get(0).toString();
-//        return str;
-//    }
 
     //запись текста из файла в MyFile
     public void readFiles(String pathDir, String nameFile) {
@@ -105,32 +64,10 @@ public class WorkWithFile {
                 allLine += (char) c;
             }
             ArrayList<String> s = new ArrayList<>();
-            for (int i = 0; i < allLine.length(); i++){
+            for (int i = 0; i < allLine.length(); i++) {
                 s.add(allLine.substring(i, Math.min(allLine.length(), i + 700)));
                 getItem(nameFile).setBook(String.valueOf(s));
             }
-
-//            char[] chars = allLine.toCharArray();
-//            for (int i = 0; i < allLine.length(); i++) {
-//                if (a == 100) {
-//                    if (cnt % (index * 10) == 0) {
-//                        if (list != null) {
-//                            getItem(nameFile).setBook(line);
-//                            index++;
-//                        }
-//                        list = new StringBuilder();
-//                    }
-//                    list.append(line);
-//                    list.append("\n");
-//                    cnt++;
-//                    a = 0;
-//                    line = "";
-//                } else {
-//                    line += chars[i];
-//                    a++;
-//                }
-//                getItem(nameFile).setBook(line);
-//            }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -142,17 +79,9 @@ public class WorkWithFile {
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
         String line = "";
-//        this.textFromFile = new StringBuilder();
         int cnt = 0;
         int index = 1;
-//        this.book = new ArrayList<>();
         StringBuilder list = null;
-//        MyFile tmpMyFile = getItem(nameFile);
-//        try {
-//            this.myFile = new MyFile(pathDir, nameFile);
-//        } catch (UnknownHostException e) {
-//            throw new RuntimeException(e);
-//        }
         try {
             fileReader = new FileReader(pathDir + File.separator + nameFile);
             bufferedReader = new BufferedReader(fileReader);
@@ -181,26 +110,6 @@ public class WorkWithFile {
         File folder = new File(pathDir);
     }
 
-//    private void createdMyBook(){
-//        int i = 0;
-//        int indexList = 0;
-//        int index = 1;
-//        this.book = new ArrayList<>();
-//        String[] strings = textFromFile.toString().split("\n");
-//        for (; i < strings.length; i++){
-//            if (indexList % (index * 6) == 0) {
-//                if (list != null) {
-//                    book.add(list);
-//                    index++;
-//                }
-//                this.list = new StringBuilder();
-//            }
-//            this.list.append(strings[i]);
-//            indexList++;
-//        }
-//        book.add(list);
-//    }
-
     public void save(String textPane, String nameFile) {
         try (FileWriter fileWriter = new FileWriter(this.pathDir +
                 File.separator +
@@ -211,18 +120,6 @@ public class WorkWithFile {
             throw new RuntimeException(e);
         }
     }
-
-//    public void searchToFile(String list, String str) {
-//        ArrayList<Integer> words = new ArrayList<>();
-//        int cnt = 0;
-//        int index = list.indexOf(str);
-//        words.add(index);
-//        while (list.isEmpty()) {
-//            index = list.indexOf(str, index + 1);
-//            words.add(index);
-//            System.out.println(index);
-//        }
-//    }
 
     public void replace(String nameFile) {
         String strSource = JOptionPane.showInputDialog(null,
@@ -250,14 +147,4 @@ public class WorkWithFile {
         }
         return null;
     }
-
-//    public void sort(Comparator<MyFile> stringComparator){
-//        for (int i = 0; i < this.myFiles.size() - 1; i++){
-//            if(stringComparator.compare(this.myFiles.get(i), this.myFiles.get(i + 1)) > 0){
-//                MyFile tmp = this.myFiles.get(i);
-//                this.myFiles.r
-//                this.myFiles.add(i + 1, tmp);
-//            }
-//        }
-//    }
 }

@@ -1,11 +1,9 @@
 package org.example.textDocument;
 
-import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 
 public class MyFile {
@@ -14,7 +12,6 @@ public class MyFile {
     private String author;
     private String sizeFile;
     private String dateOfCreation;
-    private StringBuilder strings;
     private ArrayList <StringBuilder> book;
 
     public MyFile(String pathDir, String nameFile) {
@@ -51,15 +48,7 @@ public class MyFile {
         return dateOfCreation;
     }
 
-    public StringBuilder getStrings() {
-        return strings;
-    }
-
     public ArrayList<StringBuilder> getBook() {
-        return book;
-    }
-
-    public ArrayList<StringBuilder> getList() {
         return book;
     }
 
@@ -71,7 +60,6 @@ public class MyFile {
         this.book.add(new StringBuilder(str));
     }
 
-
     @Override
     public String toString() {
         return this.nameFile +
@@ -79,5 +67,4 @@ public class MyFile {
                 "\t\t\t\t\t\t" + this.sizeFile + " Kb" +
                 "\t\t\t\t\t\t" + this.dateOfCreation;
     }
-
 }
